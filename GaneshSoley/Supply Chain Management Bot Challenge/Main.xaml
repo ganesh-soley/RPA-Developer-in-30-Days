@@ -1,14 +1,14 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Main" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ss="clr-namespace:System.Security;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Main" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ss="clr-namespace:System.Security;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property sap2010:Annotation.AnnotationText="Allows the Orchestrator queue name to be passed as an argument, instead of only being defined in the configuration file." Name="in_OrchestratorQueueName" Type="InArgument(x:String)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>680.666666666667,881.333333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>876,881.333333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>Main2_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="35">
+    <scg:List x:TypeArguments="x:String" Capacity="70">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -44,10 +44,12 @@
       <x:String>UiPath.Mail.Activities</x:String>
       <x:String>System.Reflection</x:String>
       <x:String>System.Runtime.InteropServices</x:String>
+      <x:String>System.ComponentModel</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="34">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="68">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -82,6 +84,7 @@
       <AssemblyReference>UiPath.Mail.Activities</AssemblyReference>
       <AssemblyReference>UiPath.Mail.Activities.Design</AssemblyReference>
       <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <StateMachine InitialState="{x:Reference __ReferenceID3}" sap2010:Annotation.AnnotationText="[Supply Chain Management Bot Challenge]&#xA;[This process reads PO numbers from Bot Challenge Page and searches for PO Details in Procurement Anywhere App and in Excel Worksheet and then fills the details into Bot Challenge.]&#xA;[Additional information (e.g., author, contact information and applications involved and required external setup)]" DisplayName="General Business Process" sap:VirtualizedContainerService.HintSize="690.666666666667,816.666666666667" sap2010:WorkflowViewState.IdRef="StateMachine_1">
@@ -208,7 +211,7 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
           <Transition.To>
-            <State x:Name="__ReferenceID2" sap2010:Annotation.AnnotationText="Process a single transaction. &#xA;The result of the processing can be: 1) Success, 2) Business Exception, 3) System Exception. &#xA;In the case of a system exception, the transaction can be automatically retried." DisplayName="Process Transaction" sap:VirtualizedContainerService.HintSize="231.333333333333,198.666666666667" sap2010:WorkflowViewState.IdRef="State_3">
+            <State x:Name="__ReferenceID2" sap2010:Annotation.AnnotationText="Process a single transaction. &#xA;The result of the processing can be: 1) Success, 2) Business Exception, 3) System Exception. &#xA;In the case of a system exception, the transaction can be automatically retried." DisplayName="Process Transaction" sap:VirtualizedContainerService.HintSize="485.333333333333,1076" sap2010:WorkflowViewState.IdRef="State_3">
               <State.Entry>
                 <TryCatch DisplayName="Try to process transaction" sap:VirtualizedContainerService.HintSize="438.666666666667,569.333333333333" sap2010:WorkflowViewState.IdRef="TryCatch_9">
                   <sap:WorkflowViewStateService.ViewState>
@@ -234,11 +237,24 @@
                       </Assign>
                       <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke Process workflow" sap:VirtualizedContainerService.HintSize="334,114" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_24" LogEntry="No" LogExit="No" UnSafe="False" WorkflowFileName="Process.xaml">
                         <ui:InvokeWorkflowFile.Arguments>
-                          <InArgument x:TypeArguments="x:String" x:Key="in_TransactionItem">[TransactionItem]</InArgument>
-                          <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="in_Config">[Config]</InArgument>
-                          <InArgument x:TypeArguments="x:Int32" x:Key="in_TransactionNumber">[TransactionNumber]</InArgument>
-                          <InArgument x:TypeArguments="ui:Browser" x:Key="in_PAWebAppLookUpPage">[PAWebAppLookUpPage]</InArgument>
-                          <InArgument x:TypeArguments="ui:Browser" x:Key="in_SCMChallengePage">[SCMChallengePage]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="in_TransactionItem">
+                            <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="TransactionItem" />
+                          </InArgument>
+                          <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="in_Config">
+                            <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, x:Object)" ExpressionText="Config" />
+                          </InArgument>
+                          <InArgument x:TypeArguments="x:Int32" x:Key="in_TransactionNumber">
+                            <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="TransactionNumber" />
+                          </InArgument>
+                          <InArgument x:TypeArguments="ui:Browser" x:Key="in_PAWebAppLookUpPage">
+                            <mva:VisualBasicValue x:TypeArguments="ui:Browser" ExpressionText="PAWebAppLookUpPage" />
+                          </InArgument>
+                          <InArgument x:TypeArguments="ui:Browser" x:Key="in_SCMChallengePage">
+                            <mva:VisualBasicValue x:TypeArguments="ui:Browser" ExpressionText="SCMChallengePage" />
+                          </InArgument>
+                          <InArgument x:TypeArguments="sd:DataTable" x:Key="in_dtStateAssignments">
+                            <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="dtStateAssignments" />
+                          </InArgument>
                         </ui:InvokeWorkflowFile.Arguments>
                       </ui:InvokeWorkflowFile>
                     </Sequence>
@@ -442,10 +458,21 @@
                               </If>
                               <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke InitiAllApplications workflow" sap:VirtualizedContainerService.HintSize="562.666666666667,114" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" LogEntry="No" LogExit="No" UnSafe="False" WorkflowFileName="Framework\InitAllApplications.xaml">
                                 <ui:InvokeWorkflowFile.Arguments>
-                                  <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="in_Config">[Config]</InArgument>
-                                  <OutArgument x:TypeArguments="scg:List(x:String)" x:Key="out_PONumbers">[TransactionData]</OutArgument>
-                                  <OutArgument x:TypeArguments="ui:Browser" x:Key="out_PAWebAppLookUpPage">[PAWebAppLookUpPage]</OutArgument>
-                                  <OutArgument x:TypeArguments="ui:Browser" x:Key="out_SCMChallengePage">[SCMChallengePage]</OutArgument>
+                                  <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="in_Config">
+                                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, x:Object)" ExpressionText="Config" />
+                                  </InArgument>
+                                  <OutArgument x:TypeArguments="scg:List(x:String)" x:Key="out_PONumbers">
+                                    <mva:VisualBasicReference x:TypeArguments="scg:List(x:String)" ExpressionText="TransactionData" />
+                                  </OutArgument>
+                                  <OutArgument x:TypeArguments="ui:Browser" x:Key="out_PAWebAppLookUpPage">
+                                    <mva:VisualBasicReference x:TypeArguments="ui:Browser" ExpressionText="PAWebAppLookUpPage" />
+                                  </OutArgument>
+                                  <OutArgument x:TypeArguments="ui:Browser" x:Key="out_SCMChallengePage">
+                                    <mva:VisualBasicReference x:TypeArguments="ui:Browser" ExpressionText="SCMChallengePage" />
+                                  </OutArgument>
+                                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_dtStateAssignments">
+                                    <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="dtStateAssignments" />
+                                  </OutArgument>
                                 </ui:InvokeWorkflowFile.Arguments>
                               </ui:InvokeWorkflowFile>
                             </Sequence>
@@ -526,12 +553,8 @@
                                   <TryCatch.Try>
                                     <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke CloseAllApplications workflow" sap:VirtualizedContainerService.HintSize="334,114" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_21" LogEntry="No" LogExit="No" UnSafe="False" WorkflowFileName="Framework\CloseAllApplications.xaml">
                                       <ui:InvokeWorkflowFile.Arguments>
-                                        <InArgument x:TypeArguments="ui:Browser" x:Key="in_PAWebAppLookUpPage">
-                                          <mva:VisualBasicValue x:TypeArguments="ui:Browser" ExpressionText="PAWebAppLookUpPage" />
-                                        </InArgument>
-                                        <InArgument x:TypeArguments="ui:Browser" x:Key="in_SCMChallengePage">
-                                          <mva:VisualBasicValue x:TypeArguments="ui:Browser" ExpressionText="SCMChallengePage" />
-                                        </InArgument>
+                                        <InArgument x:TypeArguments="ui:Browser" x:Key="in_PAWebAppLookUpPage">[PAWebAppLookUpPage]</InArgument>
+                                        <InArgument x:TypeArguments="ui:Browser" x:Key="in_SCMChallengePage">[SCMChallengePage]</InArgument>
                                       </ui:InvokeWorkflowFile.Arguments>
                                     </ui:InvokeWorkflowFile>
                                   </TryCatch.Try>
@@ -855,6 +878,7 @@
       <Variable x:TypeArguments="scg:List(x:String)" sap2010:Annotation.AnnotationText="Used in case transactions are stored in a DataTable, for example, after being retrieved from a spreadsheet." Default="[new List(Of String)]" Name="TransactionData" />
       <Variable x:TypeArguments="ui:Browser" Name="PAWebAppLookUpPage" />
       <Variable x:TypeArguments="ui:Browser" Name="SCMChallengePage" />
+      <Variable x:TypeArguments="sd:DataTable" Name="dtStateAssignments" />
     </StateMachine.Variables>
   </StateMachine>
 </Activity>
